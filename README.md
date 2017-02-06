@@ -1,5 +1,23 @@
 # Geometry Processing – Smoothing
 
+> **To get started:** Fork this repository then issue
+> 
+>     git clone --recursive http://github.com/[username]/geometry-processing-smoothing.git
+>
+
+## Installation, Layout, and Compilation
+
+See
+[introduction](http://github.com/alecjacobson/geometry-processing-introduction).
+
+## Execution
+
+Once built, you can execute the assignment from inside the `build/` using 
+
+    ./smoothing [path to mesh.obj] [path to data.dmat]
+
+## Background
+
 In this assignment we will explore how to smooth a data _signal_ defined over a
 curved surface. The data _signal_ may be a scalar field defined on a static
 surface: for example, noisy temperatures on the surface of an airplane.
@@ -219,6 +237,7 @@ approximation of the Laplacian $∆$ operator on a triangle mesh using:
 All of these techniques will produce the _same_ sparse _Laplacian matrix_ $\L ∈ \R^{n×n}$
 for a mesh with $n$ vertices. 
 
+<!--
 ### Finite volume derivation of the discrete Laplacian
 
 With minimal background theory, we can use the [finite volume
@@ -251,33 +270,258 @@ closer to $\v_i$ than any other vertex $\v_j$.
 > with respect to [distance _on_ the
 > mesh](https://en.wikipedia.org/wiki/Geodesic) rather than usual distance in
 > $\R³$. But luckily we will not have to explicitly compute these distances.
+-->
+
+### Finite element derivation of the discrete Laplacian
+
+We want to approximate the Laplacian of a function $∆u$. Let us consider $u$ to
+be [piecewise-linear](https://en.wikipedia.org/wiki/Piecewise_linear_function)
+represented by scalar values at each vertex, collected in $\u ∈ \R^n$.
+
+Any piecewise-linear function can be expressed as a sum of values at mesh
+vertices times corresponding piecewise-linear basis functions  (a.k.a hat
+functions, $φ_i$):
+
+\\[
+\begin{align}
+u(\x) &= ∑_{i=1}^n u_i φ_i(\x), \\
+φ(\x) &= \begin{cases}
+  1 & \text{if $\x = \v_i$}, \\
+  \frac{\text{Area($\x$,$\v_j$,$\v_k$)}}{\text{Area($\v_i$,$\v_j$,$\v_k$)}} 
+    & \text{if $\x ∈ \text{triangle}(i,j,k)$}, \\
+  0 & \text{otherwise}.
+\end{cases}
+\end{align}
+\\]
+
+![](images/hat-function.png)
+
+By plugging this definition into our smoothness energy above, we have discrete
+energy that is quadratic in the values at each mesh vertex:
+
+\\[
+\begin{align}
+∫_\S  ‖∇u(\x)‖² \;dA  
+&= ∫_\S  \left\|∇\left(∑_{i=1}^n u_i φ_i(\x)\right)\right\|^2 \;dA  \\
+&= ∫_\S  \left(∑_{i=1}^n u_i ∇φ_i(\x)\right)⋅\left(∑_{i=1}^n u_i ∇φ_i(\x)\right)  \;dA  \\
+&= ∫_\S ∑_{i=1}^n ∑_{j=1}^n ∇φ_i⋅∇φ_j u_i u_j \;dA \\
+&= \u^\transpose \L \u, \quad \text{where } L_{ij} =  ∫_\S  ∇φ_i⋅∇φ_j \;dA.
+\end{align}
+\\]
+
+By defining $φ_i$ as piecewise-linear hat functions, the values in the system
+matrix $L_{ij}$ are uniquely determined by the geometry of the underlying mesh.
+These values are famously known as _cotangent weights_. "Cotangent"
+because, as we will shortly see, of their trigonometric formulae and "weights"
+because as a matrix $\L$ they define a weighted [graph
+Laplacian](https://en.wikipedia.org/wiki/Laplacian_matrix) for the given mesh.
+Graph Laplacians are employed often in geometry processing, and often in
+discrete contexts ostensibly disconnected from FEM. The choice or manipulation
+of Laplacian weights and subsequent use as a discrete Laplace operator has been
+a point of controversy in geometry processing research (see "Discrete laplace
+operators: no free lunch" [Wardetzky et al. 2007]).
 
 
+We first notice that $∇φ_i$ are constant on each triangle, and only nonzero on
+triangles incident on node $i$. For such a triangle, $T_α$, this $∇φ_i$ points
+perpendicularly from the opposite edge $e_i$ with inverse magnitude equal to
+the height $h$ of the triangle treating that opposite edge as base:
+\begin{equation} \|∇φ_i\| = \frac{1}{h} = \frac{\|\e_i\|}{2A}, \end{equation}
+where $\e_i$ is the edge $e_i$ as a vector and $A$ is the area of the triangle.
 
-## Data denoising
+![Left: the gradient $∇ φ_i$ of a hat function $φ_i$ is piecewise-constant and
+points perpendicular to opposite edges. Right: hat function gradients $∇ φ_i$
+and $∇ φ_j$ of neighboring nodes meet at angle $θ = π -
+α_{ij}$.](images/hat-function-gradient.png)
 
-Let us start with the data denoising application. In this case, our geometry of
-the domain is not changing. 
+Now, consider two neighboring nodes $i$ and $j$, connected by some edge
+$\e_{ij}$. Then $∇φ_i$ points toward node $i$ perpendicular to $\e_i$ and
+likewise $∇ φ_j$ points toward node $j$ perpendicular to $\e_j$. Call the angle
+formed between these two vectors $θ$. So we may write:
+
+\\[
+∇ φ_i ⋅ ∇ φ_j = \|∇ φ_i\| \|∇ φ_j\| \cos θ =
+\frac{\|\e_j\|}{2A}\frac{\|\e_i\|}{2A} \cos θ. 
+\\]
+
+Now notice that the angle between $\e_i$ and $\e_j$, call it $α_{ij}$,
+is $π - θ$, but more importantly that:
+\\[
+\cos θ = - \cos \left(π - θ\right) = -\cos α_{ij}.
+\\]
+So, we can rewrite equation the cosine law equation above into:
+\\[
+-\frac{\|\e_j\|}{2A}\frac{\|\e_i\|}{2A} \cos 
+α_{ij}.
+\\]
+Now, apply the definition of sine for right triangles:
+\\[
+\sin α_{ij} = \frac{h_j}{\|\e_i\|} = \frac{h_i}{\|\e_j\|},
+\\]
+where $h_i$ is the height of the triangle treating $\e_i$ as base, and
+likewise for $h_j$. Rewriting the equation above, replacing one of the edge norms,
+e.g.\ $\|\e_i\|$:
+\\[
+-\frac{\|\e_j\|}{2A} \frac{\frac{h_j}{\sinα_{ij}}}{2A} \cos α_{ij}.
+\\]
+
+Combine the cosine and sine terms:
+\\[
+-\frac{\|\e_j\|}{2A} \frac{h_j}{2A} \cot α_{ij}.
+\\]
+
+Finally, since $\|\e_j\|h_j=2A$, our constant dot product of these
+gradients in our triangle is:
+\\[
+∇ φ_i ⋅ ∇ φ_j = -\frac{\cot α_{ij}}{2A}.
+\\]
+
+Similarly, inside the other triangle $T_β$ incident
+on nodes $i$ and $j$ with angle $β_{ij}$ we have a constant dot
+product:
+\\[
+∇ φ_i ⋅ ∇ φ_j = -\frac{\cot β_{ij}}{2B},
+\\]
+where $B$ is the area $T_β$.
+
+Recall that $φ_i$ and $φ_j$ are only both nonzero inside these two
+triangles, $T_α$ and $T_β$.  So, since these constants are inside an
+integral over area  we may write:
+\\[
+\int\limits_\S ∇ φ_i ⋅ ∇ φ_j \;dA = 
+\left.A∇ φ_i ⋅ ∇ φ_j \right|_{T_α} + \left.B∇ φ_i ⋅ ∇ φ_j \right|_{T_β}
+=
+-\frac{1}{2} \left( \cot α_{ij} + \cot β_{ij} \right).
+\\]
+
+## Mass matrix
+
+Treated as an _operator_ (i.e., when used multiplied against a vector $\L\u$),
+the Laplacian matrix $\L$ computes the local integral of the Laplacian of a
+function $u$. In the energy-based formulation of the smoothing problem this is
+not an issue. If we used a similar FEM derivation for the _data term_ we would
+get another sparse matrix $\M ∈ \R^{n × n}$:
+
+\\[
+∫_\S (u-f)² \;dA 
+  = ∫_\S ∑_{i=1}^n ∑_{j=1}^n φ_i⋅φ_j (u_i-f_i) (u_j-f_j) \;dA =
+  (\u-\f)^\transpose \M (\u-\f),
+\\]
+where $\M$ as an operator computes the local integral of a function's value
+(i.e., $\M\u$).
+
+This matrix $\M$ is often _diagonalized_ or _lumped_ into a diagonal matrix,
+even in the context of FEM. So often we will simply set:
+
+\\[
+M_{ij} = 
+\begin{cases}
+  ⅓ ∑_{t=1}^m \begin{cases}
+  \text{Area}(t) & \text{if triangle $t$ contains vertex $i$} \\
+  0 & \text{otherwise}
+  \end{cases}
+  & \text{if $i=j$}\\
+  0 & \text{otherwise},
+\end{cases}
+\\]
+for a mesh with $m$ triangles.
+
+If we start directly with the continuous smoothing iteration equation, then we
+have a point-wise equality. To fit in our integrated Laplacian $\L$ we should
+convert it to a point-wise quantity. From a units perspective, we need to
+divide by the local area. This would result in a discrete smoothing iteration
+equation:
+
+\\[
+\u^t = (\I - λ\M^{-1} \L)\u^{t+1},
+\\]
+
+where $\I ∈ \R^{n×n}$ is the identity matrix. This equation is _correct_ but
+the resulting matrix $\A := \I - λ\M^{-1} \L$ is not symmetric and thus slower
+to solve against.
+
+Instead, we could take the healthier view of requiring our smoothing iteration
+equation to hold in a locally integrated sense. In this case, we replace mass
+matrices on either side:
+
+\\[
+\M \u^t = (\M - λ\L)\u^{t+1}.
+\\]
+
+Now the system matrix $\A := \M + λ\L$ will be symmetric and we can use
+[Cholesky factorization](https://en.wikipedia.org/wiki/Cholesky_decomposition)
+to solve with it.
+
+### Laplace Operator is Intrinsic
+
+The discrete Laplacian operator and its accompanying mass matrix are
+_intrinsic_ operators in the sense that they _only_ depend on lengths. In
+practical terms, this means we do not need to know _where_ vertices are
+actually positioned in space (i.e., $\V$). Rather we only need to know the
+relative distances between neighboring vertices (i.e., edge lengths). We do not
+even need to know which dimension this mesh is [living
+in](https://en.wikipedia.org/wiki/Embedding).
+
+This also means that applying a transformation to a shape that does not change
+any lengths on the surface (e.g., bending a sheet of paper) will have no affect
+on the Laplacian.
+
+### Data denoising
+
+For the data denoising application, our geometry of the domain is not changing
+only the scalar function living upon it. We can build our discrete Laplacian
+$\L$ and mass matrix $\M$ and apply the above formula with a chosen $λ$
+parameter.
+
+### Geometric smoothing
+
+For geometric smoothing, the Laplacian operator (both $∆$ in the continuous
+setting and $\L,\M$ in the discrete setting) depend on the geometry of the
+surface $\S$. So if the signal $u$ is replaced with the positions of points on
+the surface (say, $\V ∈ \R^{n×3}$ in the discrete case), then the smoothing
+iteration update rule is a _non-linear_ function if we write it as:
+
+\\[
+\M^{t+1} \V^t = (\M^{t+1} - λ\L^{t+1})\V^{t+1}.
+\\]
+
+However, if we assume that small changes in $\V$ have a negligible effect on
+$\L$ and $\M$ then we can discretize _explicitly_ by computing $\L$ and $\M$
+_before_ performing the update:
+
+\\[
+\M^{t} \V^t = (\M^{t} - λ\L^{t}) \V^{t+1}.
+\\]
 
 ### Why did my mesh disappear?
 
-## Cotangent Laplacian
+Repeated application of geometric smoothing may cause the mesh to "disappear".
+Actually the updated vertex values are being set to
+[NaNs](https://en.wikipedia.org/wiki/NaN) due to degenerate numerics. We are
+rebuilding the discrete Laplacian at every new iteration, regardless of the
+"quality" of the mesh's triangles. In particular, if a triangle tends to become
+skinnier and skinnier during smoothing, what will happen to the cotangents of
+its angles?
 
-  - Finite Volume (Mark Meyer/PMP book)
-  - FEM (Courant etc.)
-  - Mean curvature normal, Area gradient (Desbrun/Pinkall)
-  - DEC Desbrun/Hirani
-  - GBC Wachspress/Floater
+In "Can Mean-Curvature Flow Be Made Non-Singular?", Kazhdan et al. derive a new
+type of geometric flow that is stable (so long as the mesh at time $t=0$ is
+reasonable). Their change is remarkably simple: do not update $\L$, only update
+$\M$.
 
 ## Tasks
 
-### `src/cotmatrix.cpp`
+### Learn an alternative derivation of cotangent Laplacian
 
-> Hint: Review the [law of sines](https://en.wikipedia.org/wiki/Law_of_sines)
-> and [law of cosines](https://en.wikipedia.org/wiki/Law_of_cosines) and
-> [Heron's ancient formula](https://en.wikipedia.org/wiki/Heron's_formula) to
-> derive a formula for the cotangent of each triangle angle that _only_ uses
-> edge lengths.
+The "cotangent Laplacian" by far the most important tool in geometry
+processing. It comes up everywhere. It is important to understand where it
+comes from and be able to derive it (in one way or another).
+
+The background section above contains a FEM derivation of the discrete
+"cotangnet Laplacian". For this (unmarked) task, read and understand one of the
+_other_ derivations listed above.
+
+> **Hint:** The finite-volume method used in [Botsch et al. 2010] is perhaps
+> the most accessible alternative.
 
 ### White list
 
@@ -286,8 +530,37 @@ the domain is not changing.
 
 ### Black list
 
-
   - `igl::cotmatrix_entries`
   - `igl::cotmatrix`
   - `igl::massmatrix`
   - Trig functions `sin`, `cos`, `tan` etc. (e.g., from `#include <cmath>`)
+    _See background notes about "intrinisic"-ness_
+
+### `src/cotmatrix.cpp`
+
+Construct the "cotangent Laplacian" for a mesh with edge lengths `l`. Each
+entry in the output sparse, symmetric matrix `L` is given by:
+
+\\[
+L_{ij} = \begin{cases}
+         ½ \cot{α_{ij}} + ½ \cot{β_{ij}}  & \text{if edge $ij$ exists} \\
+         ∑_{j≠i} L_{ij}                   & \text{if $i = j$} \\
+         0                                & \text{otherwise}
+         \end{cases}
+\\]
+
+> Hint: Review the [law of sines](https://en.wikipedia.org/wiki/Law_of_sines)
+> and [law of cosines](https://en.wikipedia.org/wiki/Law_of_cosines) and
+> [Heron's ancient formula](https://en.wikipedia.org/wiki/Heron's_formula) to
+> derive a formula for the cotangent of each triangle angle that _only_ uses
+> edge lengths.
+
+### `src/massmatrix.cpp`
+
+Construct the diagonal(ized) mass matrix `M` for a mesh with given face indices
+in `F` and edge lengths `l`.
+
+### `src/smooth.cpp`
+
+Given a mesh (`V`,`F`) and data specified per-vertex (`G`), smooth this data
+using a single implicit Laplacian smoothing step.
