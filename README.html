@@ -308,41 +308,6 @@ approximation of the Laplacian <span class="math">\(∆\)</span> operator on a t
 <p>All of these techniques will produce the <em>same</em> sparse <em>Laplacian matrix</em> <span class="math">\(\L ∈ \R^{n×n}\)</span>
 for a mesh with <span class="math">\(n\)</span> vertices. </p>
 
-<!--
-### Finite volume derivation of the discrete Laplacian
-
-With minimal background theory, we can use the [finite volume
-method](https://en.wikipedia.org/wiki/Finite_volume_method) to define our
-discrete approximation of the Laplacian operator $∆$ on a given triangle mesh.
-
-The rough idea of the finite volume method is to approximate a smooth function
-over a triangle mesh by considering integral averages in small regions around
-each mesh vertex.
-
-We want to approximate the Laplacian of a function $∆u$. Let us consider $u$ to
-be [piecewise-linear](https://en.wikipedia.org/wiki/Piecewise_linear_function)
-represented by scalar values at each vertex, collected in $\u ∈ \R^n$.
-
-We will approximate $∆u$ as the [integral
-average](https://en.wikipedia.org/wiki/Mean_of_a_function) of $∆u$ in the local
-neighborhood $N(\v_i)$ of each mesh vertex:
-
-\\[
-∆u(\v_i) ≈ \frac{1}{\text{Area}(N(\v_i))} ∫_{N(\v)} ∆u \;dA.
-\\]
-
-**Voronoi neighborhood:** One of the simplest choices for _dividing up_ our
-mesh into  regions around each vertex is to consider the [Voronoi
-diagram](https://en.wikipedia.org/wiki/Voronoi_diagram). The neighborhood
-$N(\v_i)$ around a vertex $\v_i$ is defined as all of the points that are
-closer to $\v_i$ than any other vertex $\v_j$.
-
-> For triangle mesh surfaces in $\R³$ the Voronoi diagram has to be defined
-> with respect to [distance _on_ the
-> mesh](https://en.wikipedia.org/wiki/Geodesic) rather than usual distance in
-> $\R³$. But luckily we will not have to explicitly compute these distances.
--->
-
 <h3 id="finiteelementderivationofthediscretelaplacian">Finite element derivation of the discrete Laplacian</h3>
 
 <p>We want to approximate the Laplacian of a function <span class="math">\(∆u\)</span>. Let us consider <span class="math">\(u\)</span> to
