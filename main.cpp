@@ -10,23 +10,25 @@
 int main(int argc, char *argv[])
 {
   // Load input meshes
-  Eigen::MatrixXd OV,V;
+  Eigen::MatrixXd OV,V,U;
   Eigen::MatrixXi F;
   double lambda = 1e-5;
   igl::read_triangle_mesh(
     (argc>1?argv[1]:"../shared/data/bunny.off"),OV,F);
   // Load data into MatrixXd rather than VectorXd for simpler `smooth` API
-  Eigen::MatrixXd G,U;
+  // Just use y-coordinates as data to be smoothed
+  Eigen::MatrixXd G = OV.col(1);
   if(argc>2)
   {
-    igl::readDMAT(argv[2],G);
-  }else
-  {
-    // Just use y-coordinates as data to be smoothed
-    G = OV.col(1);
-    // Corrupt with a bit of noise
-    G += 
-      0.1*(G.maxCoeff()-G.minCoeff())*Eigen::MatrixXd::Random(G.rows(),G.cols());
+    if(argv[2][0] == 'n')
+    {
+      // Corrupt with a bit of noise
+      G += 0.1*(G.maxCoeff()-G.minCoeff())*
+        Eigen::MatrixXd::Random(G.rows(),G.cols());
+    }else
+    {
+      igl::readDMAT(argv[2],G);
+    }
   }
 
   // Create a libigl Viewer object to toggle between point cloud and mesh
@@ -47,6 +49,7 @@ int main(int argc, char *argv[])
       std::cout<<"Too degenerate to keep smoothing. Better reset"<<std::endl;
     }
     viewer.data.set_mesh(V,F);
+    viewer.data.compute_normals();
     Eigen::MatrixXd C;
     igl::parula(U,G.minCoeff(),G.maxCoeff(),C);
     viewer.data.set_colors(C);

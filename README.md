@@ -12,9 +12,20 @@ See
 
 ## Execution
 
-Once built, you can execute the assignment from inside the `build/` using 
+Once built, you can execute the assignment from inside the `build/` by running
+on a given mesh with given scalar field (in
+[dmat](http://libigl.github.io/libigl/file-formats/dmat.html) format).
 
     ./smoothing [path to mesh.obj] [path to data.dmat]
+
+or to load a mesh with phony noisy data use:
+
+    ./smoothing [path to mesh.obj] n
+
+or to load a mesh with smooth z-values as data (for mesh smoothing only):
+
+    ./smoothing [path to mesh.obj]
+
 
 ## Background
 
@@ -529,3 +540,14 @@ in `F` and edge lengths `l`.
 
 Given a mesh (`V`,`F`) and data specified per-vertex (`G`), smooth this data
 using a single implicit Laplacian smoothing step.
+
+This data could be a scalar field on the surface and smoothing corresponds to
+data denoising.
+
+![](images/beetle-data-denoising.gif)
+
+Or the data could be the vector field of the surface's own geometry. This
+corresponds to geometric smoothing.
+
+![](images/sphere-geometric-smoothing.gif)
+

@@ -16,7 +16,6 @@ $$\newcommand{\C}{\mat{C}}$$
 $$\newcommand{\D}{\mat{D}}$$
 $$\newcommand{\I}{\mat{I}}$$
 $$\newcommand{\G}{\mat{G}}$$
-$$\newcommand{\L}{\mat{L}}$$
 $$\newcommand{\N}{\mat{N}}$$
 $$\newcommand{\P}{\mat{P}}$$
 $$\newcommand{\Rot}{\mat{R}}$$
@@ -25,15 +24,16 @@ $$\newcommand{\One}{\mathbf{1}}$$
 $$\newcommand{\S}{\mathcal{S}}$$
 $$\newcommand{\M}{\mat{M}}$$
 $$\newcommand{\U}{\mat{U}}$$
+$$\newcommand{\L}{\mat{L}}$$
 $$\newcommand{\V}{\mat{V}}$$
 $$\newcommand{\W}{\mat{W}}$$ 
 $$\newcommand{\X}{\mat{X}}$$
 $$\newcommand{\Y}{\mat{Y}}$$
 $$\newcommand{\c}{\vec{c}}$$
-$$\newcommand{\e}{\vec{e}}$$
 $$\newcommand{\f}{\vec{f}}$$
 $$\newcommand{\g}{\vec{g}}$$
 $$\newcommand{\n}{\vec{n}}$$
+$$\newcommand{\e}{\vec{e}}$$
 $$\newcommand{\p}{\vec{p}}$$
 $$\newcommand{\tr}[1]{\mathop{\text{tr}}{\left(#1\right)}}$$
 $$\newcommand{\t}{\vec{t}}$$
@@ -63,9 +63,21 @@ $$\newcommand{\argmax}{\mathop{\text{argmax}}}$$
 
 <h2 id="execution">Execution</h2>
 
-<p>Once built, you can execute the assignment from inside the <code>build/</code> using </p>
+<p>Once built, you can execute the assignment from inside the <code>build/</code> by running
+on a given mesh with given scalar field (in
+<a href="http://libigl.github.io/libigl/file-formats/dmat.html">dmat</a> format).</p>
 
 <pre><code>./smoothing [path to mesh.obj] [path to data.dmat]
+</code></pre>
+
+<p>or to load a mesh with phony noisy data use:</p>
+
+<pre><code>./smoothing [path to mesh.obj] n
+</code></pre>
+
+<p>or to load a mesh with smooth z-values as data (for mesh smoothing only):</p>
+
+<pre><code>./smoothing [path to mesh.obj]
 </code></pre>
 
 <h2 id="background">Background</h2>
@@ -613,6 +625,20 @@ in <code>F</code> and edge lengths <code>l</code>.</p>
 
 <p>Given a mesh (<code>V</code>,<code>F</code>) and data specified per-vertex (<code>G</code>), smooth this data
 using a single implicit Laplacian smoothing step.</p>
+
+<p>This data could be a scalar field on the surface and smoothing corresponds to
+data denoising.</p>
+
+<figure>
+<img src="images/beetle-data-denoising.gif" alt="" />
+</figure>
+
+<p>Or the data could be the vector field of the surface&#8217;s own geometry. This
+corresponds to geometric smoothing.</p>
+
+<figure>
+<img src="images/sphere-geometric-smoothing.gif" alt="" />
+</figure>
 
 </body>
 </html>
