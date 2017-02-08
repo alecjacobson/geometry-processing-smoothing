@@ -34,7 +34,7 @@ void cotmatrix(
             double b = le((i+1)%3);
             double c = le((i+2)%3);
             double ca = ( b*b + c*c - a*a ) / ( 2 * b*c );
-            double v = .5 * ca / Sa(i);
+            double v = -.5 * ca / Sa(i);
 
 
             //int A = f((i+0)%3);

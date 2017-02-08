@@ -20,7 +20,7 @@ void smooth(
   massmatrix(l,F,M);
 
 
-  A = -lambda * L;
+  A = +lambda * L;
   for(int i = 0; i < M.diagonal().size(); ++i) {
       A.coeffRef(i,i) += M.diagonal()(i);
    }
