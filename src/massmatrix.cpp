@@ -10,7 +10,8 @@ void massmatrix(
 {
 	int f = F.rows();
 	int n = F.maxCoeff() + 1;
-	int m = 3 * f / 2;
+	
+	M.resize(n);
 
 	VectorXd A(f);
 	igl::doublearea(l, A);
@@ -20,10 +21,11 @@ void massmatrix(
 	VectorXd mVec(n);
 	mVec.setZero();
 
-	for(int i = 0; i < n; ++i)
+	for (int i = 0; i < f; ++i)
+	{
 		for (int j = 0; j < 3; ++j)
-			mVec(F(i, j)) += oneSixth*A(i);
+			mVec(F(i, j)) += oneSixth*std::abs(A(i));
+	}
 
 	M = mVec.asDiagonal();
 }
-

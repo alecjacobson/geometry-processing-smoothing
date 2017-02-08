@@ -1,6 +1,4 @@
 #include "cotmatrix.h"
-#include <set>
-#include <cmath>
 
 using namespace Eigen;
 
@@ -9,13 +7,11 @@ void cotmatrix(
   const Eigen::MatrixXi & F,
   Eigen::SparseMatrix<double> & L)
 {
-	double a, b, c, cosine, halfCot;
+	double a, aSqr, b, bSqr, c, cSqr, cosC2AB, halfCot;
 	int v1, v2;
 
 	int n = F.maxCoeff() + 1;
 	int f = F.rows();
-	int m = 3 * f / 2;	//for closed surface, each edge is repeated twice
-	int numNan = 0;
 	std::vector<Triplet<double>> lVal;
 	lVal.reserve(9 * f);
 	L.resize(n, n);
@@ -26,17 +22,17 @@ void cotmatrix(
 		{
 			//get squared lengths: c is the length of the edge being considered
 			a = l(i, (j + 1) % 3);
-			a = a*a;
+			aSqr = a*a;
 			b = l(i, (j + 2) % 3);
-			b = b*b;
+			bSqr = b*b;
 			c = l(i, j);
-			c = c*c;
+			cSqr = c*c;
 
 			//2ab*cos(C)
-			cosine = (a + b - c);
+			cosC2AB = (aSqr + bSqr - cSqr);
 
 			// cot^2 t = cos^2 t / ( 1 - cos^2 t ), with premultiplication
-			halfCot = 0.5*sqrt(cosine*cosine / (4*a*b - cosine*cosine));
+			halfCot = 0.5*std::sqrt(cosC2AB*cosC2AB / (4*aSqr*bSqr - cosC2AB*cosC2AB));
 
 			v1 = F(i, (j+1) % 3);
 			v2 = F(i, (j+2) % 3);

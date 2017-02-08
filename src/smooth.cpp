@@ -16,7 +16,7 @@ void smooth(
     double lambda,
     Eigen::MatrixXd & U)
 {
-	MatrixXd l;
+	MatrixXd l(F.rows(), 3);
 	SparseMatrix<double> L;
 	DiagonalMatrix<double, Eigen::Dynamic> M;
 	//SparseMatrix<double> M;
@@ -27,11 +27,11 @@ void smooth(
 	massmatrix(l, F, M);
 	//igl::massmatrix(V, F, igl::MASSMATRIX_TYPE_VORONOI, M);
 
-	SparseMatrix<double> A = (-lambda*L);
+	SparseMatrix<double> A(-lambda*L);
 	VectorXd diag = M.diagonal();
 
 	int n = F.maxCoeff() + 1;
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < diag.size(); ++i)
 		A.coeffRef(i, i) += diag(i);
 
 	SimplicialLDLT<SparseMatrix<double>, Lower> solver(A);
