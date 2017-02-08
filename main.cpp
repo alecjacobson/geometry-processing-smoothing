@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
   Eigen::MatrixXi F;
   double lambda = 1e-5;
   igl::read_triangle_mesh(
-    (argc>1?argv[1]:"../shared/data/bunny.off"),OV,F);
+    (argc>1?argv[1]:"../shared/data/sphere-noisy.obj"),OV,F);
   // Load data into MatrixXd rather than VectorXd for simpler `smooth` API
   // Just use y-coordinates as data to be smoothed
   Eigen::MatrixXd G = OV.col(1);
