@@ -1,6 +1,5 @@
 #include "cotmatrix.h"
 #include <math.h>
-#include <iostream>
 
 // Given side lengths a, b, and c, return the
 // cosine of angle gamma (opposite from side with length c)

@@ -1,6 +1,5 @@
 #include "massmatrix.h"
 #include <math.h>
-#include <iostream>
 
 // Return the area of the triangle with sides a, b and c
 double get_area(double a, double b, double c) {

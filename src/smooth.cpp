@@ -3,7 +3,6 @@
 #include "massmatrix.h"
 #include <igl/edge_lengths.h>
 #include <algorithm>
-#include <iostream>
 
 void smooth(
     const Eigen::MatrixXd & V,
