@@ -2,6 +2,7 @@
 #include "massmatrix.h"
 #include "cotmatrix.h"
 #include <igl/edge_lengths.h>
+#include <igl/massmatrix.h>
 #include <Eigen/SparseCholesky>
 
 void smooth(
@@ -40,18 +41,16 @@ void smooth(
 
   Eigen::SparseMatrix<double> L;
   cotmatrix(l, F, L);
-
+  
   Eigen::SparseMatrix<double> A(M.rows(), M.rows());
+  A.setIdentity();
+ 
+  if(Eigen::MatrixXd(L).hasNaN())
+    printf("L has nan\n");
   
-  A = -lambda*L;
-
-  for(int32_t i = 0; i < A.rows(); i++)
-  {
-    A.coeffRef(i, i) += M.diagonal()(i);
-  }
+  Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver;
+  U = solver.compute(A*M - lambda*L).solve(M*G);
   
-  Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver(A);
-  U = solver.solve(M*G);
   if(U.maxCoeff()  != U.maxCoeff())
     printf("NaN in solution\n");
 }

@@ -5,7 +5,7 @@ typedef Eigen::Triplet<double> tri;
 // finds the cotangent of the angle opposite edge a
 double cotangent(double a, double b, double c)
 {
-  double cosA = (a*a + b*b + c*c)/(2*c*b);
+  double cosA = (-a*a + b*b + c*c)/(2*c*b);
   double sinA = sqrt(1 - cosA*cosA);
   return cosA/sinA;
 }
@@ -18,14 +18,14 @@ void cotmatrix(
   // Given edges l, and the Tets F, construct the "cotangent Laplacian":
   /*
            / ½cotαᵢⱼ + ½cotβᵢⱼ  if edge ij exists
-    Lᵢⱼ =  | ∑ᵢ≠ⱼ Lᵢⱼ           if i = j
+    Lᵢⱼ =  | -∑ᵢ≠ⱼ Lᵢⱼ           if i = j
            \ 0                  otherwise
 
     the angles are coming from the edge lengths in the l matrix
 
     angle A is opposite side a
     using the cosine law:
-    cos(A) = (a² + b² + c²)/2bc
+    cos(A) = (-a² + b² + c²)/2bc
     then we know that sin(A) = sqrt(1 - cos²(A))
     then the cotangent is given by cos(A)/sin(A)
 
@@ -56,9 +56,9 @@ void cotmatrix(
     tripletList.push_back(tri(v0, v2, 0.5*cot1));
     // diagonals:
     // L(vi, vi) = - (cotj + cotk)
-    tripletList.push_back(tri(v0, v0, -cot1-cot2));
-    tripletList.push_back(tri(v1, v1, -cot0-cot2));
-    tripletList.push_back(tri(v2, v2, -cot1-cot0));
+    tripletList.push_back(tri(v0, v0, 0.5*(-cot1-cot2)));
+    tripletList.push_back(tri(v1, v1, 0.5*(-cot0-cot2)));
+    tripletList.push_back(tri(v2, v2, 0.5*(-cot1-cot0)));
   }
   int32_t max = F.maxCoeff() + 1;
   L.resize(max, max);
