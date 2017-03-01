@@ -150,7 +150,7 @@ describing the change in value as an integral of relative values:</p>
 
 <p><span class="math">\[
 \frac{∂ u}{∂ t} 
-  = λ \frac{1}{|B(\x))|} ∫_{B(\x)} u(\z)-u(\x) \;d\z.
+  = λ \frac{1}{|B(\x))|} ∫_{B(\x)} (u(\z)-u(\x)) \;d\z.
 \]</span></p>
 
 <p>For harmonic functions, <span class="math">\(∆u =0\)</span>, this integral becomes zero in the limit as the
@@ -162,7 +162,7 @@ of the <span class="math">\(u\)</span>, so we have arrived at our flow equation:
 
 <p><span class="math">\[
 \frac{∂ u}{∂ t} 
-  = \lim_{|B(\x)| → 0}  λ \frac{1}{|B(\x))|} ∫_{B(\x)} u(\z)-u(\x) \;d\z 
+  = \lim_{|B(\x)| → 0}  λ \frac{1}{|B(\x))|} ∫_{B(\x)} (u(\z)-u(\x)) \;d\z 
   = λ ∆ u.
 \]</span></p>
 
@@ -177,8 +177,8 @@ difference with <span class="math">\(f\)</span> and minimizes its variation over
 u^* 
   = \argmin_u E_(u) 
   = 
-  \argmin_u ½∫_\S \underbrace{(f-u)²}_\text{data term} + 
-  λ\underbrace{‖∇u‖²}_\text{smoothness term} \;dA,
+  \argmin_u ½∫_\S ( \underbrace{(f-u)²}_\text{data} + 
+  \underbrace{λ‖∇u‖²}_\text{smoothness} )\;dA,
 \]</span></p>
 
 <p>where again the scalar parameter <span class="math">\(λ\)</span> controls the rate of smoothing. This
@@ -209,7 +209,7 @@ are given another arbitrary function <span class="math">\(v\)</span>, then let u
 function </p>
 
 <p><span class="math">\[
-Φ(ε) = E(w+εv) = ½∫_\S (f-w+εv)² + λ ‖∇w + ε∇v‖²  \;dA,
+Φ(ε) = E(w+εv) = ½∫_\S ((f-w+εv)² + λ ‖∇w + ε∇v‖²)  \;dA,
 \]</span>
 where we observe that <span class="math">\(Φ\)</span> is quadratic in <span class="math">\(ε\)</span>.</p>
 
@@ -219,11 +219,11 @@ minimal at <span class="math">\(ε=0\)</span>, then the derivative of <span clas
 <p><span class="math">\[
 \begin{align}
 0 & = \left.\frac{∂Φ}{∂ε} \right|_{ε = 0},\\
-  & = \left.\frac{∂}{∂ε} ½∫_\S (f-w-εv)² + λ ‖∇w + ε∇v‖²\;dA, \right|_{ε = 0} \\
-  & = \left.\frac{∂}{∂ε} ½∫_\S
-    f^2 - 2wf - 2εfv +w²+2εvw +ε²v² + λ ‖∇w‖² + λ2ε∇v⋅∇w + λ ε²‖∇w‖² \;dA \right|_{ε = 0}\\
-  & = \left.∫_\S -fv + vw +2εvw  + λ∇v⋅∇w + λ ε‖∇w‖² \;dA \right|_{ε = 0}\\
-  & = ∫_\S v(w-f)  + λ∇v⋅∇w \;dA.
+  & = \left.\frac{∂}{∂ε} ½∫_\S ( (f-w-εv)² + λ ‖∇w + ε∇v‖²)\;dA, \right|_{ε = 0} \\
+  & = \left.\frac{∂}{∂ε} ½∫_\S (
+    f^2 - 2wf - 2εfv +w²+2εvw +ε²v² + λ ‖∇w‖² + λ2ε∇v⋅∇w + λ ε²‖∇w‖²) \;dA \right|_{ε = 0}\\
+  & = \left.∫_\S (-fv + vw +2εvw  + λ∇v⋅∇w + λ ε‖∇w‖²) \;dA \right|_{ε = 0}\\
+  & = ∫_\S (v(w-f)  + λ∇v⋅∇w )\;dA.
 \end{align}
 \]</span></p>
 
@@ -231,7 +231,7 @@ minimal at <span class="math">\(ε=0\)</span>, then the derivative of <span clas
 (reasonable) choice of <span class="math">\(v\)</span>:</p>
 
 <p><span class="math">\[
-0 = ∫_\S v(w-f)  + λ∇v⋅∇w \;dA \quad ∀ v.
+0 = ∫_\S (v(w-f)  + λ∇v⋅∇w) \;dA \quad ∀ v.
 \]</span></p>
 
 <p>It is difficult to claim much about <span class="math">\(w\)</span> from this equation directly because
@@ -240,7 +240,7 @@ derivatives of <span class="math">\(v\)</span> are still involved. We can <em>mo
 identity</a>:</p>
 
 <p><span class="math">\[
-0 = ∫_\S v(w-f)  - λv∆w \;dA \quad (+  \text{boundary term} )\quad ∀ v,
+0 = ∫_\S (v(w-f)  - λv∆w )\;dA \quad (+  \text{boundary term} )\quad ∀ v,
 \]</span>
 where we choose to <em>ignore</em> the boundary terms (for now) or equivalently we
 agree to work on <em>closed</em> surfaces <span class="math">\(\S\)</span>.</p>

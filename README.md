@@ -93,7 +93,7 @@ describing the change in value as an integral of relative values:
 
 \\[
 \frac{∂ u}{∂ t} 
-  = λ \frac{1}{|B(\x))|} ∫_{B(\x)} u(\z)-u(\x) \;d\z.
+  = λ \frac{1}{|B(\x))|} ∫_{B(\x)} (u(\z)-u(\x)) \;d\z.
 \\]
 
 For harmonic functions, $∆u =0$, this integral becomes zero in the limit as the
@@ -105,7 +105,7 @@ of the $u$, so we have arrived at our flow equation:
 
 \\[
 \frac{∂ u}{∂ t} 
-  = \lim_{|B(\x)| → 0}  λ \frac{1}{|B(\x))|} ∫_{B(\x)} u(\z)-u(\x) \;d\z 
+  = \lim_{|B(\x)| → 0}  λ \frac{1}{|B(\x))|} ∫_{B(\x)} (u(\z)-u(\x)) \;d\z 
   = λ ∆ u.
 \\]
 
@@ -120,8 +120,8 @@ difference with $f$ and minimizes its variation over the surface:
 u^* 
   = \argmin_u E_(u) 
   = 
-  \argmin_u ½∫_\S \underbrace{(f-u)²}_\text{data term} + 
-  λ\underbrace{‖∇u‖²}_\text{smoothness term} \;dA,
+  \argmin_u ½∫_\S ( \underbrace{(f-u)²}_\text{data} + 
+  \underbrace{λ‖∇u‖²}_\text{smoothness} )\;dA,
 \\]
 
 where again the scalar parameter $λ$ controls the rate of smoothing. This
@@ -151,7 +151,7 @@ are given another arbitrary function $v$, then let us define a function new
 function 
 
 \\[
-Φ(ε) = E(w+εv) = ½∫_\S (f-w+εv)² + λ ‖∇w + ε∇v‖²  \;dA,
+Φ(ε) = E(w+εv) = ½∫_\S ((f-w+εv)² + λ ‖∇w + ε∇v‖²)  \;dA,
 \\]
 where we observe that $Φ$ is quadratic in $ε$.
 
@@ -161,11 +161,11 @@ minimal at $ε=0$, then the derivative of $Φ$ with respect $ε$ must be zero:
 \\[
 \begin{align}
 0 & = \left.\frac{∂Φ}{∂ε} \right|_{ε = 0},\\
-  & = \left.\frac{∂}{∂ε} ½∫_\S (f-w-εv)² + λ ‖∇w + ε∇v‖²\;dA, \right|_{ε = 0} \\
-  & = \left.\frac{∂}{∂ε} ½∫_\S
-    f^2 - 2wf - 2εfv +w²+2εvw +ε²v² + λ ‖∇w‖² + λ2ε∇v⋅∇w + λ ε²‖∇w‖² \;dA \right|_{ε = 0}\\
-  & = \left.∫_\S -fv + vw +2εvw  + λ∇v⋅∇w + λ ε‖∇w‖² \;dA \right|_{ε = 0}\\
-  & = ∫_\S v(w-f)  + λ∇v⋅∇w \;dA.
+  & = \left.\frac{∂}{∂ε} ½∫_\S ( (f-w-εv)² + λ ‖∇w + ε∇v‖²)\;dA, \right|_{ε = 0} \\
+  & = \left.\frac{∂}{∂ε} ½∫_\S (
+    f^2 - 2wf - 2εfv +w²+2εvw +ε²v² + λ ‖∇w‖² + λ2ε∇v⋅∇w + λ ε²‖∇w‖²) \;dA \right|_{ε = 0}\\
+  & = \left.∫_\S (-fv + vw +2εvw  + λ∇v⋅∇w + λ ε‖∇w‖²) \;dA \right|_{ε = 0}\\
+  & = ∫_\S (v(w-f)  + λ∇v⋅∇w )\;dA.
 \end{align}
 \\]
 
@@ -173,7 +173,7 @@ The choice of "test" function $v$ was arbitrary, so this must hold for any
 (reasonable) choice of $v$:
 
 \\[
-0 = ∫_\S v(w-f)  + λ∇v⋅∇w \;dA \quad ∀ v.
+0 = ∫_\S (v(w-f)  + λ∇v⋅∇w) \;dA \quad ∀ v.
 \\]
 
 It is difficult to claim much about $w$ from this equation directly because
@@ -182,7 +182,7 @@ $w$ by applying [Green's first
 identity](https://en.wikipedia.org/wiki/Green's_identities):
 
 \\[
-0 = ∫_\S v(w-f)  - λv∆w \;dA \quad (+  \text{boundary term} )\quad ∀ v,
+0 = ∫_\S (v(w-f)  - λv∆w )\;dA \quad (+  \text{boundary term} )\quad ∀ v,
 \\]
 where we choose to _ignore_ the boundary terms (for now) or equivalently we
 agree to work on _closed_ surfaces $\S$.
