@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
     }
   }
 
-  // Create a libigl Viewer object to toggle between point cloud and mesh
   igl::viewer::Viewer viewer;
   std::cout<<R"(
   D,d  smooth data
