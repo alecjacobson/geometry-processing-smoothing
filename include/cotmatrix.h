@@ -2,6 +2,9 @@
 #define COTMATRIX_H
 #include <Eigen/Core>
 #include <Eigen/Sparse>
+#include <vector>
+#include <map>
+#include <string>
 // Construct the "cotangent Laplacian" for a mesh with edge lengths `l`. Each
 // entry in the output sparse, symmetric matrix `L` is given by:
 //
@@ -18,7 +21,7 @@
 //
 // Inputs:
 //   l  #F by 3 matrix so that l(f,c) is the length of the "half-edge"
-//     **_across_** from the cth of the fth face. 
+//     **_across_** from the cth of the fth face.
 //   F  #F by 3 list of triangle indices into a vertex list `V`. You may assume
 //     that the number of vertices #V = F.maxCoeff()+1
 // Outputs:
@@ -28,4 +31,11 @@ void cotmatrix(
   const Eigen::MatrixXd & l,
   const Eigen::MatrixXi & F,
   Eigen::SparseMatrix<double> & L);
+
+double cotangent_triangle(
+  int i,
+  int j,
+  int f_idx,
+  const Eigen::MatrixXd & l,
+  const Eigen::MatrixXi & F);
 #endif
