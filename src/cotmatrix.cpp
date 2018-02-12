@@ -1,8 +1,8 @@
 #include "cotmatrix.h"
 #include <Eigen/Sparse>
-#include <vector>
 #include <math.h>
-
+#include <ppl.h>
+#include <concurrent_vector.h>
 inline void vertex_index(const int i, int& il, int& ir)
 {
   il = i - 1 < 0 ? 2 : i - 1;
@@ -16,10 +16,10 @@ void cotmatrix(
 {
   // Add your code here
   typedef Eigen::Triplet<double> tuple;
-  std::vector<tuple> tuple_list;
+  Concurrency::concurrent_vector<tuple> tuple_list;
   const int n = F.rows();
   tuple_list.reserve(12 * n);
-  for (int m = 0; m < n; m++)
+  Concurrency::parallel_for(size_t(0),size_t(n), [&l,&F,n,&tuple_list](const int m)
   {
     int il, ir;
     int v[3];
@@ -54,6 +54,6 @@ void cotmatrix(
       tuple_list.push_back(tuple(v[il], v[il], -0.5*cot[i]));
       tuple_list.push_back(tuple(v[ir], v[ir], -0.5*cot[i]));
     } 
-  }
+  }, Concurrency::auto_partitioner());
   L.setFromTriplets(tuple_list.begin(), tuple_list.end());
 }
