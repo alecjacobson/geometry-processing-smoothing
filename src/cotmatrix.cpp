@@ -21,8 +21,11 @@ void cotmatrix(
     L.coeffRef(F(i, 0), F(i, 2)) = L.coeffRef(F(i, 2), F(i, 0));
 
     L.coeffRef(F(i, 0), F(i, 0)) -= cotangentL(l(i, 2), l(i, 0), l(i, 1));
+    L.coeffRef(F(i, 1), F(i, 1)) -= cotangentL(l(i, 2), l(i, 0), l(i, 1));
     L.coeffRef(F(i, 1), F(i, 1)) -= cotangentL(l(i, 0), l(i, 1), l(i, 2));
+    L.coeffRef(F(i, 2), F(i, 2)) -= cotangentL(l(i, 0), l(i, 1), l(i, 2));
     L.coeffRef(F(i, 2), F(i, 2)) -= cotangentL(l(i, 1), l(i, 2), l(i, 0));
+    L.coeffRef(F(i, 0), F(i, 0)) -= cotangentL(l(i, 1), l(i, 2), l(i, 0));
   }
 }
 

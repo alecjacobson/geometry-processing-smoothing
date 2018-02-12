@@ -19,21 +19,14 @@ void smooth(
   massmatrix(l, F, M);
   Eigen::SparseMatrix<double> L; 
   cotmatrix(l, F, L);
-  // std::cout << L << std::endl;
-  Eigen::MatrixXd new_U;
-  new_U.resizeLike(U);
-
-  // Eigen::SparseMatrix<double> M_Sparse = M.diagonal().asDiagonal();
   Eigen::ConjugateGradient<Eigen::SparseMatrix<double>> solver;
-  Eigen::MatrixXd Mu = M * U;
+  Eigen::MatrixXd Mu = M * G;
   Eigen::SparseMatrix<double> A(M.rows(), M.cols());
   for (int i = 0; i < M.rows();i++) {
   	A.coeffRef(i, i) = M.diagonal()[i];
   }
-  A += lambda * L;
+  A -= lambda * L;
   solver.compute(A);
-  new_U = solver.solve(Mu);
-  // std::cout << U - new_U << std::endl;
-  U = new_U;
+  U = solver.solve(Mu);
   std::cout << "smooth!" << std::endl;
 }
