@@ -1,5 +1,4 @@
 #include "massmatrix.h"
-#include <iostream>
 
 void massmatrix(
   const Eigen::MatrixXd & l,
