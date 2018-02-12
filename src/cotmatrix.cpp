@@ -52,7 +52,7 @@ void cotmatrix(
       tuple_list.push_back(tuple(v[il], v[ir], 0.5*cot[i]));
       tuple_list.push_back(tuple(v[ir], v[il], 0.5*cot[i]));
       tuple_list.push_back(tuple(v[il], v[il], -0.5*cot[i]));
-      tuple_list.push_back(tuple(v[il], v[il], -0.5*cot[i]));
+      tuple_list.push_back(tuple(v[ir], v[ir], -0.5*cot[i]));
     } 
   }
   L.setFromTriplets(tuple_list.begin(), tuple_list.end());
