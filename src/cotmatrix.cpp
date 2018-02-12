@@ -27,8 +27,8 @@ void cotmatrix(
     for (int i = 0; i < F.rows(); i ++) {
         for (int j = 0; j < 3; j ++) {
             //Cosine Law
-            cosVal = l(i,vals(j,0)) * l(i,vals(j,1)) / 2.0;
-            cosVal = cosVal * (1.0/l(i,vals(j,0)) + 1.0 / l(i,vals(j,1)) - 1.0/l(i,j));
+            cosVal = 1.0/ (2.0 * l(i,vals(j,0)) * l(i,vals(j,1)));
+            cosVal = cosVal * (pow(l(i,vals(j,0)),2) + pow(l(i,vals(j,1)),2) - pow(l(i,j),2));
             
             //We use the fact that sine is always positive.
             sinVal = sqrt(1.0 - pow(cosVal,2.0));
