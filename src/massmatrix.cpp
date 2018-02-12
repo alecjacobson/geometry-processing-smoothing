@@ -1,4 +1,5 @@
 #include "massmatrix.h"
+#include <iostream>
 
 void massmatrix(
   const Eigen::MatrixXd & l,
@@ -7,21 +8,22 @@ void massmatrix(
 {
     int numV = F.maxCoeff() + 1;
     
-    M.resize(numV,numV);
-    
-    typedef Eigen::Triplet<double> T;
-    std::vector<T> tripletList;
-    tripletList.reserve(F.rows()*3);
+    Eigen::VectorXd curValues;
+    curValues.resize(numV);
+    curValues.setZero();
     
     double area, s;
     for (int i = 0; i < F.rows(); i ++) {
-        s = F.row(i).sum() / 2.0;
+        //Compute area using Heron's formula
+        s = l.row(i).sum() / 2.0;
         area = sqrt(s * (s - l(i,0)) * (s - l(i,1)) * (s - l(i,2)));
         for (int j = 0; j < 3; j ++) {
-            tripletList.push_back(F(i,j), F(i,j), area / 3.0);
+            curValues(F(i,j)) += area / 3.0;
         }
     }
-    //Might cause some issues
-    M.setFromTriplets(tripletList.begin(), tripletList.end());
+    
+    //Update elements in M
+    M.diagonal() = curValues;
+
 }
 
