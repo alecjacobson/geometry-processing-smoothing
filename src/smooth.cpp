@@ -7,6 +7,12 @@ void smooth(
     double lambda,
     Eigen::MatrixXd & U)
 {
-  // Replace with your code
-  U = G;
+    Eigen::
+    //Need to compute edge-lengths matrix
+    
+    //Compute Laplacian
+    
+    //Compute Mass Matrix
+    
+
 }
