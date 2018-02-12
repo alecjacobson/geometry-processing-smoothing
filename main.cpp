@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
   Eigen::MatrixXd OV,V,U;
   Eigen::MatrixXi F;
   double lambda = 1e-5;
+  // double lambda = 1e5;
   igl::read_triangle_mesh(
     (argc>1?argv[1]:"../shared/data/bunny.off"),OV,F);
   // Load data into MatrixXd rather than VectorXd for simpler `smooth` API

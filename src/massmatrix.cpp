@@ -17,8 +17,8 @@ void massmatrix(
     double s = (a + b + c) / 2;
     double area = sqrt(s * (s - a) * (s - b) * (s - c)) / 3;
     areas(F(i, 0)) += area;
-    areas(F(i, 1))  += area;
-    areas(F(i, 2))  += area;
+    areas(F(i, 1)) += area;
+    areas(F(i, 2)) += area;
   }
   M = areas.asDiagonal();
 }
