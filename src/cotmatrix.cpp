@@ -1,57 +1,46 @@
 #include "cotmatrix.h"
+#include <iostream>
 
 void cotmatrix(
   const Eigen::MatrixXd & l,
   const Eigen::MatrixXi & F,
   Eigen::SparseMatrix<double> & L)
 {
-  std::vector< Eigen::Triplet<double> > tripletList;
-  // Preprocess: create a hash of edge ij to face index
-  std::map<std::string, int> edge_to_f;
   int num_faces = F.rows();
-  for(int f_idx= 0; f_idx < num_faces; f_idx++){
-    int v0 = F(f_idx, 0); int v1 = F(f_idx, 1); int v2 = F(f_idx, 2);
-    // Create string keys
-    std::string key01 = std::to_string(v0) + std::to_string(v1);
-    std::string key12 = std::to_string(v1) + std::to_string(v2);
-    std::string key20 = std::to_string(v2) + std::to_string(v0);
-    // Add mappings to edge_to_f
-    edge_to_f.insert(make_pair(key01,f_idx));
-    edge_to_f.insert(make_pair(key12,f_idx));
-    edge_to_f.insert(make_pair(key20,f_idx));
-  }
-  // Create triplets of L
   int V = F.maxCoeff() + 1;
-  double sum_off_diagonals = 0;
-  for(int i = 0; i < V; i ++){
-    for(int j = 0; j < V; j ++){
-      // Find indicies into F of two faces that are incident on edge i j
-      std::string keyij = std::to_string(i) + std::to_string(j);
-      std::string keyji = std::to_string(j) + std::to_string(i);
-      int fa_idx = edge_to_f[keyij];
-      int fb_idx = edge_to_f[keyji];
-      if(fa_idx != 0 && fb_idx != 0){
-        // found the edge, compute cotangent a_ij and b_ij
-        double cotangent_a = cotangent_triangle(i,j, fa_idx, l, F);
-        double cotangent_b = cotangent_triangle(j,i, fb_idx, l, F);
-        double cotangent_sum = (0.5 * cotangent_a) + (0.5 * cotangent_b);
-        sum_off_diagonals += cotangent_sum;
-        tripletList.push_back(Eigen::Triplet<double>(i, j, cotangent_sum));
-      }
-    }
+  L.resize(V, V);
+  L.setZero();
+
+  Eigen::VectorXd sum_off_diagonals = Eigen::VectorXd::Zero(V);
+  for(int f_idx = 0; f_idx < num_faces; f_idx++){
+    int i = F(f_idx, 0); int j = F(f_idx, 1); int k = F(f_idx, 2);
+    // EDGE IJ
+    double half_cot;
+    half_cot = 0.5 * cotangent_triangle(i,j,f_idx, l, F);
+    L.coeffRef(i,j) += half_cot;
+    L.coeffRef(j,i) += half_cot;
+    sum_off_diagonals(i) += half_cot; sum_off_diagonals(j) += half_cot;
+    // EDGE JK
+    half_cot = 0.5 * cotangent_triangle(j,k,f_idx, l, F);
+    L.coeffRef(j,k) += half_cot;
+    L.coeffRef(k,j) += half_cot;
+    sum_off_diagonals(j) += half_cot; sum_off_diagonals(k) += half_cot;
+    // EDGE KI
+    half_cot = 0.5 * cotangent_triangle(k,i,f_idx, l, F);
+    L.coeffRef(k,i) += half_cot;
+    L.coeffRef(i,k) += half_cot;
+    sum_off_diagonals(k) += half_cot; sum_off_diagonals(i) += half_cot;
   }
   // Diagonal entries
   for(int v = 0; v < V; v++){
-    tripletList.push_back(Eigen::Triplet<double>(v, v, -sum_off_diagonals));
+    L.coeffRef(v,v) = -sum_off_diagonals(v);
   }
-  // Populate L
-  L.setFromTriplets(tripletList.begin(), tripletList.end());
 }
 
 double cotangent_triangle(
-  int i,
-  int j,
-  int f_idx,
+  const int i,
+  const int j,
+  const int f_idx,
   const Eigen::MatrixXd & l,
   const Eigen::MatrixXi & F)
   {
@@ -65,17 +54,17 @@ double cotangent_triangle(
       }
     }
     // Find edge length of edge ij
-    double l_ij = l(f_idx,i_pos);
-    double l_jk = l(f_idx, j_pos);
-    double l_ki = l(f_idx, k_pos);
+    double c = l(f_idx, k_pos);
+    double a = l(f_idx, i_pos);
+    double b = l(f_idx, j_pos);
 
     // Herons formula + solve for diameter of triangle's circumference
-    double sp = (l_ij + l_jk + l_ki) / 2; // semiperimeter
-    double area = sqrt(sp * (sp - l_jk) * (sp - l_ki) * (sp * l_ij));
-    double d = (l_ij * l_jk * l_ki) / (2 * area);
+    double sp = (a + b + c) / 2; // semiperimeter
+    double area = sqrt(sp * (sp - a) * (sp - b) * (sp - c));
+    double d = (a * b * c) / (2 * area);
 
     // From sin and cos laws
-    double sin_theta = l_ij / d;
-    double cos_theta = ((l_jk*l_jk) + (l_ki*l_ki) - (l_ij * l_ij)) / (2 * l_jk * l_ki);
-    return 0.0;
+    double sin_theta = c / d;
+    double cos_theta = ((a*a) + (b*b) - (c * c)) / (2 * a * b);
+    return cos_theta / sin_theta;
   }

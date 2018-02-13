@@ -3,7 +3,7 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <string>
 // Construct the "cotangent Laplacian" for a mesh with edge lengths `l`. Each
 // entry in the output sparse, symmetric matrix `L` is given by:
@@ -33,9 +33,9 @@ void cotmatrix(
   Eigen::SparseMatrix<double> & L);
 
 double cotangent_triangle(
-  int i,
-  int j,
-  int f_idx,
+  const int i,
+  const int j,
+  const int f_idx,
   const Eigen::MatrixXd & l,
   const Eigen::MatrixXi & F);
 #endif
