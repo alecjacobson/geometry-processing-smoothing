@@ -1,5 +1,4 @@
 #include "cotmatrix.h"
-#include <iostream>
 
 void cotmatrix(
   const Eigen::MatrixXd & l,
