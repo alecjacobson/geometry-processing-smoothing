@@ -7,7 +7,7 @@ void cotmatrix(
 {
     typedef Eigen::Triplet<double> T;
     std::vector<T> tripletList;
-    tripletList.reserve(F.rows()*4);
+    tripletList.reserve(F.rows()*12);
     
     Eigen::MatrixXd vals(3,2);
     
