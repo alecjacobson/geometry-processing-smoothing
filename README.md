@@ -520,7 +520,7 @@ entry in the output sparse, symmetric matrix `L` is given by:
 \\[
 L_{ij} = \begin{cases}
          ½ \cot{α_{ij}} + ½ \cot{β_{ij}}  & \text{if edge $ij$ exists} \\
-         ∑_{j≠i} L_{ij}                   & \text{if $i = j$} \\
+         -∑_{j≠i} L_{ij}                   & \text{if $i = j$} \\
          0                                & \text{otherwise}
          \end{cases}
 \\]

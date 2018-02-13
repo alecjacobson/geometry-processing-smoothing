@@ -2,6 +2,7 @@
 #define MASSMATRIX_H
 #include <Eigen/Core>
 #include <Eigen/Sparse>
+#include <iostream>
 // Construct the diagonal(ized) mass matrix for a mesh with edge lengths `l`.
 // Each enetry in the output sparse, symmetric matrix `M` is given by:
 //

@@ -2,6 +2,7 @@
 #define COTMATRIX_H
 #include <Eigen/Core>
 #include <Eigen/Sparse>
+#include <iostream>
 // Construct the "cotangent Laplacian" for a mesh with edge lengths `l`. Each
 // entry in the output sparse, symmetric matrix `L` is given by:
 //

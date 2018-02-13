@@ -2,6 +2,10 @@
 #define SMOOTH_H
 #include <Eigen/Core>
 #include <Eigen/Sparse>
+#include "cotmatrix.h"
+#include "massmatrix.h"
+#include "igl/edge_lengths.h"
+#include <iostream>
 // Given a mesh (`V`,`F`) and data specified per-vertex (`G`), smooth this data
 // using a single implicit Laplacian smoothing step.
 //
