@@ -19,6 +19,6 @@ void massmatrix(
     double area = sqrt(sp * (sp - a) * (sp - b) * (sp - c));
     masses(i) += area; masses(j) += area; masses(k) += area;
   }
-  masses /= 3;
-  M = masses.asDiagonal();
+  masses /= 3.0;
+  M.diagonal() = masses;
 }

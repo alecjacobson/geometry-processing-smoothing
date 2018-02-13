@@ -21,9 +21,13 @@ void smooth(
   Eigen::DiagonalMatrix<double,Eigen::Dynamic> M;
   massmatrix(l, F, M);
   // Update by solving linear system Ax = b
-  // x = U(t+1); b = MU; A = M + lambda*L;
-  Eigen::MatrixXd A = lambda * L;
-  //Eigen::MatrixXd A = M + (lambda * L);
-  Eigen::VectorXd b = M*U;
-  U = G;
+  // x = U(t+1); b = MU(t); A = M - lambda*L;
+  Eigen::SparseMatrix<double> A = -(lambda * L);
+  Eigen::VectorXd md = M.diagonal();
+  for(int i=0; i < M.rows(); i++){
+    A.coeffRef(i,i) += md(i);
+  }
+  Eigen::VectorXd b = M*G;
+  Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver(A);
+  U = solver.solve(b);
 }

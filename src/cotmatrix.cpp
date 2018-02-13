@@ -12,29 +12,32 @@ void cotmatrix(
   L.setZero();
 
   Eigen::VectorXd sum_off_diagonals = Eigen::VectorXd::Zero(V);
+  std::vector< Eigen::Triplet<double> > tripletList;
   for(int f_idx = 0; f_idx < num_faces; f_idx++){
     int i = F(f_idx, 0); int j = F(f_idx, 1); int k = F(f_idx, 2);
     // EDGE IJ
     double half_cot;
     half_cot = 0.5 * cotangent_triangle(i,j,f_idx, l, F);
-    L.coeffRef(i,j) += half_cot;
-    L.coeffRef(j,i) += half_cot;
+    tripletList.push_back(Eigen::Triplet<double>(i,j, half_cot));
+    tripletList.push_back(Eigen::Triplet<double>(j,i, half_cot));
     sum_off_diagonals(i) += half_cot; sum_off_diagonals(j) += half_cot;
     // EDGE JK
     half_cot = 0.5 * cotangent_triangle(j,k,f_idx, l, F);
-    L.coeffRef(j,k) += half_cot;
-    L.coeffRef(k,j) += half_cot;
+    tripletList.push_back(Eigen::Triplet<double>(j,k, half_cot));
+    tripletList.push_back(Eigen::Triplet<double>(k,j, half_cot));
     sum_off_diagonals(j) += half_cot; sum_off_diagonals(k) += half_cot;
     // EDGE KI
     half_cot = 0.5 * cotangent_triangle(k,i,f_idx, l, F);
-    L.coeffRef(k,i) += half_cot;
-    L.coeffRef(i,k) += half_cot;
+    tripletList.push_back(Eigen::Triplet<double>(k,i, half_cot));
+    tripletList.push_back(Eigen::Triplet<double>(i,k, half_cot));
     sum_off_diagonals(k) += half_cot; sum_off_diagonals(i) += half_cot;
   }
   // Diagonal entries
   for(int v = 0; v < V; v++){
-    L.coeffRef(v,v) = -sum_off_diagonals(v);
+    tripletList.push_back(Eigen::Triplet<double>(v,v, -sum_off_diagonals(v)));
   }
+
+   L.setFromTriplets(tripletList.begin(), tripletList.end());
 }
 
 double cotangent_triangle(
