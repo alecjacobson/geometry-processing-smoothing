@@ -12,7 +12,7 @@ void smooth(
     Eigen::MatrixXd & U)
 {
   // Replace with your code
-  //U = G;
+
   Eigen::MatrixXd l;
   igl::edge_lengths(V, F, l);
   
@@ -25,6 +25,7 @@ void smooth(
   Eigen::SparseMatrix<double> A;
   A = -lambda * L;
 
+
   for (int i = 0; i < A.rows(); i++)
   {
 	  A.coeffRef(i, i) += M.diagonal()(i);
@@ -32,7 +33,9 @@ void smooth(
   //Eigen::MatrixXd A = M - lambda * L;
   Eigen::LLT<Eigen::MatrixXd> llt;
   llt.compute(A);
-  Eigen::VectorXf b = M*G;
+
+  Eigen::MatrixXd b = M*G;
   U = llt.solve(b);
+
    
 }
