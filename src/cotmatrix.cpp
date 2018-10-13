@@ -1,7 +1,5 @@
 #include "cotmatrix.h"
 
-#include "igl/adjacency_list.h"
-
 void cotmatrix(
   const Eigen::MatrixXd & l,
   const Eigen::MatrixXi & F,
