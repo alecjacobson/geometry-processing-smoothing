@@ -2,7 +2,7 @@
 #include <igl/read_triangle_mesh.h>
 #include <igl/readDMAT.h>
 #include <igl/parula.h>
-#include <igl/viewer/Viewer.h>
+#include <igl/opengl/glfw/Viewer.h>
 #include <Eigen/Core>
 #include <string>
 #include <iostream>
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  igl::viewer::Viewer viewer;
+  igl::opengl::glfw::Viewer viewer;
   std::cout<<R"(
   D,d  smooth data
   K    decamate(?) lambda
@@ -47,11 +47,11 @@ int main(int argc, char *argv[])
     {
       std::cout<<"Too degenerate to keep smoothing. Better reset"<<std::endl;
     }
-    viewer.data.set_mesh(V,F);
-    viewer.data.compute_normals();
+    viewer.data().set_mesh(V,F);
+    viewer.data().compute_normals();
     Eigen::MatrixXd C;
     igl::parula(U,G.minCoeff(),G.maxCoeff(),C);
-    viewer.data.set_colors(C);
+    viewer.data().set_colors(C);
   };
   const auto & reset = [&]()
   {
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     U = G;
   };
   viewer.callback_key_pressed = 
-    [&](igl::viewer::Viewer &, unsigned int key, int)
+    [&](igl::opengl::glfw::Viewer &, unsigned int key, int)
   {
     switch(key)
     {
