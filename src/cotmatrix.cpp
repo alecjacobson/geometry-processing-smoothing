@@ -1,6 +1,5 @@
 #include "cotmatrix.h"
 #include "igl/doublearea.h"
-#include <iostream>
 #include <cmath>
 
 void cotmatrix(

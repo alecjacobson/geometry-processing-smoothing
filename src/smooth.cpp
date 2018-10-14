@@ -2,9 +2,7 @@
 #include "cotmatrix.h"
 #include "massmatrix.h"
 #include "igl/edge_lengths.h"
-#include "igl/cotmatrix.h"
 #include "Eigen/SparseCholesky"
-#include <iostream>
 
 void smooth(
     const Eigen::MatrixXd & V,
