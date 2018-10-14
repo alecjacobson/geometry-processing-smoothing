@@ -20,7 +20,7 @@ void smooth(
   // Construct cot and mass matrices
   Eigen::SparseMatrix<double> L;
   Eigen::DiagonalMatrix<double, Eigen::Dynamic> M;
-  cotmatrix(l, F, L_comp); 
+  cotmatrix(l, F, L); 
   massmatrix(l, F, M);
 
   // Solve for U as solution of M G = (M - lambda * L) U;
