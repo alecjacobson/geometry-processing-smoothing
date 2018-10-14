@@ -18,8 +18,7 @@ void smooth(
   igl::edge_lengths(V, F, l);
 
   // Construct cot and mass matrices
-  Eigen::SparseMatrix<double> L_real;
-  Eigen::SparseMatrix<double> L_comp;
+  Eigen::SparseMatrix<double> L;
   Eigen::DiagonalMatrix<double, Eigen::Dynamic> M;
   cotmatrix(l, F, L_comp); 
   massmatrix(l, F, M);
@@ -27,7 +26,7 @@ void smooth(
   // Solve for U as solution of M G = (M - lambda * L) U;
   Eigen::SparseMatrix<double> I(F.maxCoeff() + 1, F.maxCoeff() + 1);
   I.setIdentity();
-  Eigen::SparseMatrix<double> L_lambda = I - lambda * M.inverse() * L_comp;
+  Eigen::SparseMatrix<double> L_lambda = I - lambda * M.inverse() * L;
   L_lambda = M * L_lambda;
   Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver;
   solver.compute(L_lambda);
