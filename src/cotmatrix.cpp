@@ -1,5 +1,6 @@
 #include "cotmatrix.h"
 #include <cmath>
+#include <iostream>
 
 using namespace Eigen;
 using namespace std;
@@ -25,6 +26,10 @@ void cotmatrix(
   Eigen::SparseMatrix<double> & L)
 {
   vector<Triplet<double>> triplets;
+  int n = F.maxCoeff() + 1;
+  triplets.reserve(n * 12);
+  
+
   for (int i = 0; i < F.rows(); i++) {
     // vertices
     int VA = F(i, 0);
@@ -32,8 +37,8 @@ void cotmatrix(
     int VC = F(i, 2);
     // edges l: columns correspond to edges 23,31,12
     double a = l(i, 0); // BC
-    double b = l(i, 1); // AC
-    double c = l(i, 2); // CA
+    double b = l(i, 1); // CA
+    double c = l(i, 2); // AB
     // cot
     double cotA = compute_cot(a, b, c);
     double cotB = compute_cot(b, c, a);
@@ -53,6 +58,7 @@ void cotmatrix(
     triplets.push_back(Triplet<double>(VA, VA, -cotB / 2.0));
     triplets.push_back(Triplet<double>(VC, VC, -cotB / 2.0));
   }
-  L.resize(F.maxCoeff() + 1, F.maxCoeff() + 1);
+
+  L.resize(n, n);
   L.setFromTriplets(triplets.begin(), triplets.end());
 }
