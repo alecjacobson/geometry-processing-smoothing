@@ -269,6 +269,7 @@ triangles incident on node <img src="./tex/77a3b857d53fb44e33b53e4c8b68351a.svg?
 perpendicularly from the opposite edge <img src="./tex/b95c2b0aab2482e5bebd25332a4bbde0.svg?invert_in_darkmode" align=middle width=12.3050367pt height=14.1552444pt/> with inverse magnitude equal to
 the height <img src="./tex/2ad9d098b937e46f9f58968551adac57.svg?invert_in_darkmode" align=middle width=9.4711155pt height=22.8310566pt/> of the triangle treating that opposite edge as base:
 
+<p align="center"><img src="./tex/4148b1898d976255af11ef4509e668c1.svg?invert_in_darkmode" align=middle width=142.70184225pt height=34.7253258pt/></p>
 
 where <img src="./tex/2dfa893f7bf3c5c01ceb4788da782da0.svg?invert_in_darkmode" align=middle width=13.3152525pt height=14.6118786pt/> is the edge <img src="./tex/b95c2b0aab2482e5bebd25332a4bbde0.svg?invert_in_darkmode" align=middle width=12.3050367pt height=14.1552444pt/> as a vector and <img src="./tex/53d147e7f3fe6e47ee05b88b166bd3f6.svg?invert_in_darkmode" align=middle width=12.32879835pt height=22.4657235pt/> is the area of the triangle.
 
