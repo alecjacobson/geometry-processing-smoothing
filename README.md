@@ -98,7 +98,7 @@ theorem](https://en.wikipedia.org/wiki/Harmonic_function#The_mean_value_property
 It follows for a non-harmonic <img src="./tex/74a93b9b98af7c7b321f354c4fcf8ea2.svg?invert_in_darkmode" align=middle width=53.24578545pt height=22.8310566pt/> this integral is equal to the Laplacian
 of the <img src="./tex/6dbb78540bd76da3f1625782d42d6d16.svg?invert_in_darkmode" align=middle width=9.4102734pt height=14.1552444pt/>, so we have arrived at our flow equation:
 
-<p align="center"><img src="./tex/fd1ea805db98db0bfe3a05020cbc7771.svg?invert_in_darkmode" align=middle width=384.5539698pt height=40.3902642pt/></p>
+<p align="center"><img src="./tex/1837a3ba67cc7b4f946656323866bfcb.svg?invert_in_darkmode" align=middle width=384.5539698pt height=40.3902642pt/></p>
 
 
 ### Energy-based formulation

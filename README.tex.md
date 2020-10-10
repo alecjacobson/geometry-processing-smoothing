@@ -109,7 +109,7 @@ of the $u$, so we have arrived at our flow equation:
 
 $$
 \frac{\partial  u}{\partial  t} 
-  = \lim_{|B(\mathbf{x})| \Rightarrow  0}  {\lambda} \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} (u(\mathbf{z})-u(\mathbf{x})) \;d\mathbf{z} 
+  = \lim_{|B(\mathbf{x})| \rightarrow  0}  {\lambda} \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} (u(\mathbf{z})-u(\mathbf{x})) \;d\mathbf{z} 
   = {\lambda} \Delta  u.
 $$
 
