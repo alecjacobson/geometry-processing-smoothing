@@ -282,17 +282,6 @@ u(\mathbf{x}) &= {\sum}_{i=1}^n u_i {\varphi}_i(\mathbf{x}), \\
 
 
 
-$$
-u(\mathbf{x}) = {\sum}_{i=1}^n u_i {\varphi}_i(\mathbf{x}), \\
-{\varphi}(\mathbf{x}) = \begin{cases}
-  1 & \text{if $\mathbf{x} = \mathbf{v}_i$}, \\
-  \frac{\text{Area($\mathbf{x}$,$\mathbf{v}_j$,$\mathbf{v}_k$)}}{\text{Area($\mathbf{v}_i$,$\mathbf{v}_j$,$\mathbf{v}_k$)}} 
-    & \text{if $\mathbf{x} \in  \text{triangle}(i,j,k)$}, \\
-  0 & \text{otherwise}.
-\end{cases}
-$$
-
-
 ![](images/hat-function.png)
 
 By plugging this definition into our smoothness energy above, we have discrete
