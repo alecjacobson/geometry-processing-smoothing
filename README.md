@@ -269,7 +269,6 @@ triangles incident on node <img src="https://rawgit.com/alecjacobson/geometry-pr
 perpendicularly from the opposite edge <img src="https://rawgit.com/alecjacobson/geometry-processing-smoothing/master/tex/b95c2b0aab2482e5bebd25332a4bbde0.svg?invert_in_darkmode" align=middle width=12.3050367pt height=14.1552444pt/> with inverse magnitude equal to
 the height <img src="https://rawgit.com/alecjacobson/geometry-processing-smoothing/master/tex/2ad9d098b937e46f9f58968551adac57.svg?invert_in_darkmode" align=middle width=9.4711155pt height=22.8310566pt/> of the triangle treating that opposite edge as base:
 
-<p align="center"><img src="https://rawgit.com/alecjacobson/geometry-processing-smoothing/master/tex/f6615783313c17fdff535cee69045532.svg?invert_in_darkmode" align=middle width=136.1630358pt height=34.7253258pt/></p>
 
 where <img src="https://rawgit.com/alecjacobson/geometry-processing-smoothing/master/tex/2dfa893f7bf3c5c01ceb4788da782da0.svg?invert_in_darkmode" align=middle width=13.3152525pt height=14.6118786pt/> is the edge <img src="https://rawgit.com/alecjacobson/geometry-processing-smoothing/master/tex/b95c2b0aab2482e5bebd25332a4bbde0.svg?invert_in_darkmode" align=middle width=12.3050367pt height=14.1552444pt/> as a vector and <img src="https://rawgit.com/alecjacobson/geometry-processing-smoothing/master/tex/53d147e7f3fe6e47ee05b88b166bd3f6.svg?invert_in_darkmode" align=middle width=12.32879835pt height=22.4657235pt/> is the area of the triangle.
 

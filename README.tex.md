@@ -327,9 +327,6 @@ triangles incident on node $i$. For such a triangle, $T_{\alpha}$, this ${\nabla
 perpendicularly from the opposite edge $e_i$ with inverse magnitude equal to
 the height $h$ of the triangle treating that opposite edge as base:
 
-$$
-\|{\nabla}{\varphi}_i\| = \frac{1}{h} = \frac{\|\mathbf{e}_i\|}{2A}
-$$
 
 where $\mathbf{e}_i$ is the edge $e_i$ as a vector and $A$ is the area of the triangle.
 
