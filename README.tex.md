@@ -326,7 +326,11 @@ We first notice that ${\nabla}{\varphi}_i$ are constant on each triangle, and on
 triangles incident on node $i$. For such a triangle, $T_{\alpha}$, this ${\nabla}{\varphi}_i$ points
 perpendicularly from the opposite edge $e_i$ with inverse magnitude equal to
 the height $h$ of the triangle treating that opposite edge as base:
-\begin{equation} \|{\nabla}{\varphi}_i\| = \frac{1}{h} = \frac{\|\mathbf{e}_i\|}{2A}, \end{equation}
+
+$$
+\|{\nabla}{\varphi}_i\| = \frac{1}{h} = \frac{\|\mathbf{e}_i\|}{2A}
+$$
+
 where $\mathbf{e}_i$ is the edge $e_i$ as a vector and $A$ is the area of the triangle.
 
 ![Left: the gradient ${\nabla} {\varphi}_i$ of a hat function ${\varphi}_i$ is piecewise-constant and
