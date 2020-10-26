@@ -72,12 +72,12 @@ Laplacian as a form of local averaging.
 
 Given a noisy signal $f$, intuitively we can _smooth_ $f$ by averaging every
 value with its neighbors' values. In continuous math, we might write that the
-smoothed value $u(\mathbf{x})$ at any point on our surface $\mathbf{x} \in  \mathbf{S}$ should be equal to
-the average value of some small
-[ball](https://en.wikipedia.org/wiki/Ball_(mathematics)) of nearby points:
+smoothed value $u(\mathbf{x})$ at any point times the volume of a small neighboring [ball](https://en.wikipedia.org/wiki/Ball_(mathematics)) on 
+our surface $\mathbf{x} \in  \mathbf{S}$ should be equal to
+the average value of the ball:
 
 $$
-u(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} f(\mathbf{z}) \;d\mathbf{z},
+|B(\mathbf{x})| u(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} f(\mathbf{z}) \;d\mathbf{z},
 $$
 
 
@@ -86,22 +86,21 @@ times to see a global smoothing effect. Hence, we can write that the current
 value $u^t$ _flows_ toward smooth solution by small steps ${\delta}t$ in time:
 
 $$
-u^{t+{\delta}t}(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} u^t(\mathbf{z}) \;d\mathbf{z}.
+|B(\mathbf{x})| u^{t+{\delta}t}(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} u^t(\mathbf{z}) \;d\mathbf{z}.
 $$
 
 
-Subtracting the current value $u^t(\mathbf{x})$ from both sides and introducing a
+Dividing both sides by $B(\mathbf{x})$; subtracting the current value $u^t(\mathbf{x})$ from both sides, and introducing a
 flow-speed parameter ${\lambda}$ we have a flow equation
 describing the change in value as an integral of relative values:
 
 $$
 \frac{\partial  u}{\partial  t} 
-  = {\lambda} \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} (u(\mathbf{z})-u(\mathbf{x})) \;d\mathbf{z}.
+  = {\lambda} \frac{1}{|B(\mathbf{x}))|^2} \int _{B(\mathbf{x})} (u(\mathbf{z})-u(\mathbf{x})) \;d\mathbf{z}.
 $$
 
 
-For harmonic functions, $\Delta u =0$, this integral becomes zero in the limit as the
-radius of the ball shrinks to zero via satisfaction of the
+For harmonic functions, $\Delta u =0$, this integral becomes zero via satisfaction of the
 [mean value
 theorem](https://en.wikipedia.org/wiki/Harmonic_function#The_mean_value_property).
 It follows for a non-harmonic $\Delta u \ne  0$ this integral is equal to the Laplacian
@@ -109,10 +108,11 @@ of the $u$, so we have arrived at our flow equation:
 
 $$
 \frac{\partial  u}{\partial  t} 
-  = \lim_{|B(\mathbf{x})| \rightarrow  0}  {\lambda} \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} (u(\mathbf{z})-u(\mathbf{x})) \;d\mathbf{z} 
+  = \lim_{|B(\mathbf{x})| \rightarrow  0}  {\lambda} \frac{1}{|B(\mathbf{x}))|^2} \int _{B(\mathbf{x})} (u(\mathbf{z})-u(\mathbf{x})) \;d\mathbf{z} 
   = {\lambda} \Delta  u.
 $$
 
+(see, for example, [Laplace-Betrami operator case](https://mathoverflow.net/questions/216156/laplace-beltrami-and-averaging), [Laplace operator case](https://math.stackexchange.com/questions/50274/intuitive-interpretation-of-the-laplacian).)
 
 ### Energy-based formulation
 
