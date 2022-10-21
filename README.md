@@ -77,7 +77,7 @@ our surface $\mathbf{x} \in  \mathbf{S}$ should be equal to
 the average value of the ball:
 
 $$
-|B(\mathbf{x})| u(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} f(\mathbf{z}) \\, d\mathbf{z},
+u(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} f(\mathbf{z}) \\, d\mathbf{z},
 $$
 
 
