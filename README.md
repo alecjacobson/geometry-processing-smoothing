@@ -86,7 +86,7 @@ times to see a global smoothing effect. Hence, we can write that the current
 value $u^t$ _flows_ toward smooth solution by small steps ${\delta}t$ in time:
 
 $$
-|B(\mathbf{x})| u^{t+{\delta}t}(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} u^t(\mathbf{z}) \\, d\mathbf{z}.
+u^{t+{\delta}t}(\mathbf{x}) = \frac{1}{|B(\mathbf{x}))|} \int _{B(\mathbf{x})} u^t(\mathbf{z}) \\, d\mathbf{z}.
 $$
 
 
