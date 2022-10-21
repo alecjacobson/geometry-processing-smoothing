@@ -167,8 +167,8 @@ $$
 0 & = \left.\frac{\partial {\phi}}{\partial {\epsilon}} \right|\_{{\epsilon} = 0},\\
   & = \left.\frac{\partial }{\partial {\epsilon}} \frac12 \int \_\mathbf{S} ( (f-w-{\epsilon}v)^{2} + {\lambda} || {\nabla}w + {\epsilon}{\nabla}v|| ^{2})\\, dA, \right|\_{{\epsilon} = 0} \\
   & = \left.\frac{\partial }{\partial {\epsilon}} \frac12 \int \_\mathbf{S} (
-    f^2 - 2wf - 2{\epsilon}fv +w^{2}+2{\epsilon}vw +{\epsilon}^{2}v^{2} + {\lambda} || {\nabla}w|| ^{2} + {\lambda}2{\epsilon}{\nabla}v\cdot {\nabla}w + {\lambda} {\epsilon}^{2}|| {\nabla}w|| ^{2}) \\, dA \right|\_{{\epsilon} = 0}\\
-  & = \left.\int \_\mathbf{S} (-fv + vw +2{\epsilon}vw  + {\lambda}{\nabla}v\cdot {\nabla}w + {\lambda} {\epsilon}|| {\nabla}w|| ^{2}) \\, dA \right|\_{{\epsilon} = 0}\\
+    f^2 - 2wf - 2{\epsilon}fv +w^{2}+2{\epsilon}vw +{\epsilon}^{2}v^{2} + {\lambda} || {\nabla}w|| ^{2} + {\lambda}2{\epsilon}{\nabla}v\cdot {\nabla}w + {\lambda} {\epsilon}^{2}|| {\nabla}v|| ^{2}) \\, dA \right|\_{{\epsilon} = 0}\\
+  & = \left.\int \_\mathbf{S} (-fv + vw +2{\epsilon}vw  + {\lambda}{\nabla}v\cdot {\nabla}w + {\lambda} {\epsilon}|| {\nabla}v|| ^{2}) \\, dA \right|\_{{\epsilon} = 0}\\
   & = \int \_\mathbf{S} (v(w-f)  + {\lambda}{\nabla}v\cdot {\nabla}w )\\, dA.
 \end{align*}
 $$
