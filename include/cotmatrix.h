@@ -28,4 +28,9 @@ void cotmatrix(
   const Eigen::MatrixXd & l,
   const Eigen::MatrixXi & F,
   Eigen::SparseMatrix<double> & L);
+
+double cotangentL(
+	double c,
+	double a,
+	double b);
 #endif
