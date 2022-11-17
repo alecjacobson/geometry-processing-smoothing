@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
   // Load input meshes
   Eigen::MatrixXd OV,V,U;
   Eigen::MatrixXi F;
-  double lambda = 1e-5;
+  double lambda = 1e-3;
   igl::read_triangle_mesh(
     (argc>1?argv[1]:"../data/sphere-noisy.obj"),OV,F);
   // Load data into MatrixXd rather than VectorXd for simpler `smooth` API
